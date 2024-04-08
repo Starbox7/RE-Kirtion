@@ -50,7 +50,7 @@ public class UserModel {
     private LocalDateTime created;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "user_setting", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<UserSettingModel> settings = new ArrayList<>();
     public void addUserSetting(UserSettingModel userSettingModel){
@@ -58,7 +58,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<WorkspaceModel> workspaces = new ArrayList<>();
     public void addWorkspace(WorkspaceModel workspaceModel){
@@ -66,7 +66,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "team_member", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<TeamMemberModel> members = new ArrayList<>();
     public void addMember(TeamMemberModel teamMemberModel){
@@ -74,7 +74,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "message", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<MessageModel> messages = new ArrayList<>();
     public void addMessage(MessageModel messageModel){
@@ -82,7 +82,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page_update", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<PageUpdateModel> pageUpdates = new ArrayList<>();
     public void addPageUpdate(PageUpdateModel pageUpdateModel){
@@ -90,7 +90,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<PaymentModel> payments = new ArrayList<>();
     public void addPayment(PaymentModel paymentModel){
@@ -98,7 +98,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "ricipient", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<RicipientModel> ricipients = new ArrayList<>();
     public void addRicipient(RicipientModel ricipientModel){
@@ -106,7 +106,7 @@ public class UserModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "vat", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<VatModel> vats = new ArrayList<>();
     public void addVat(VatModel vatModel){

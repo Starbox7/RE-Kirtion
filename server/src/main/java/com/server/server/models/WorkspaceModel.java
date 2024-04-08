@@ -56,7 +56,7 @@ public class WorkspaceModel {
     private LocalDateTime created;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "teamspace", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<TeamspaceModel> teamspaces = new ArrayList<>();
     public void addTeamspace(TeamspaceModel teamspaceModel){
@@ -64,7 +64,7 @@ public class WorkspaceModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "workspace", cascade = CascadeType.PERSIST)
     @Builder.Default
     private List<PageModel> pages = new ArrayList<>();
     public void addPage(PageModel pageModel){
