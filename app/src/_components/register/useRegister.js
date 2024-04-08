@@ -1,18 +1,23 @@
 import { useRef, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { setAuthData } from "../../features/auth.slice";
+import { secretKey } from "../../constants/constant";
+import crypto from "crypto-js";
 
 export default function useRegister() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const confirmRef = useRef("");
+  // const email = useSelector((state) => state.auth.email);
 
   const [validEmail, setValidEmail] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
   const [validConfirm, setValidConfirm] = useState(true);
+  // const dispatch = useDispatch();
 
   function onChangeEmail(event) {
     emailRef.current = event.target.value;
     setValidEmail(isValidEmail(event.target.value));
-    console.log(validEmail);
   }
 
   function isValidEmail(email) {
@@ -43,16 +48,15 @@ export default function useRegister() {
 
   function onChangeConfirm(event) {
     confirmRef.current = event.target.value;
-    setValidConfirm(isValidConfirm(event.target.value));
-    console.log(validConfirm);
+    setValidConfirm(confirmPassword(event.target.value));
   }
 
-  function isValidConfirm(confirm) {
+  function confirmPassword(confirm) {
     if (confirm == passwordRef.current) return true;
     else return false;
   }
 
-  function register() {
+  function isConfirm() {
     if (
       validEmail &&
       validPassword &&
@@ -61,10 +65,26 @@ export default function useRegister() {
       passwordRef.current != "" &&
       confirmRef.current != ""
     ) {
+      const secret = "VPVCNMB6bfxcL9EkVsIIc+985W3H8Ea6eRIyQC+UiEs=";
+      const credentials = `${emailRef.current}:${passwordRef.current}`;
+      const encryptedCredentials = crypto.AES.encrypt(
+        credentials,
+        secret
+      ).toString();
+
+      return {
+        confirm: true,
+        encryptedCredentials: encryptedCredentials,
+      };
+      // dispatch();
+      // setAuthData({ email: emailRef.current, password: passwordRef.current })
+      // alert(email);
     } else {
       setValidEmail(false);
       setValidPassword(false);
       setValidConfirm(false);
+
+      return false;
     }
   }
 
@@ -75,6 +95,6 @@ export default function useRegister() {
     validPassword,
     onChangeConfirm,
     validConfirm,
-    register,
+    isConfirm,
   };
 }

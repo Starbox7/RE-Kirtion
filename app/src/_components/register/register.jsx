@@ -2,6 +2,9 @@ import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@mui/material";
 
+//query
+import { useMutation } from "@tanstack/react-query";
+
 //hooks
 import useRegister from "./useRegister";
 
@@ -22,8 +25,11 @@ import {
 
 import { Apple, Google, Kakao } from "../../assets/noticon";
 import Header from "../common/header/header";
+import { registerRepo } from "../../repositories/auth.repository";
 
 export default function Register() {
+  const mutation = useMutation({ mutationFn: registerRepo });
+
   const {
     onChangeEmail,
     validEmail,
@@ -31,7 +37,7 @@ export default function Register() {
     validPassword,
     onChangeConfirm,
     validConfirm,
-    register,
+    isConfirm,
   } = useRegister();
 
   return (
@@ -87,7 +93,11 @@ export default function Register() {
         <ContinueButton
           variant="contained"
           onClick={() => {
-            register();
+            const { confirm, encryptedCredentials } = isConfirm();
+            if (confirm) {
+              mutation.mutate({ encryptedCredentials: encryptedCredentials });
+              console.log(mutation.data);
+            }
           }}
         >
           Continue
