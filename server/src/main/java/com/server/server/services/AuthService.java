@@ -1,8 +1,8 @@
-package com.server.server.auth;
+package com.server.server.services;
 
 import org.springframework.stereotype.Service;
 
 @Service
-public class authService {
+public class AuthService {
   
 }

@@ -1,8 +1,4 @@
 import { useRef, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { setAuthData } from "../../features/auth.slice";
-import { secretKey } from "../../constants/constant";
-import crypto from "crypto-js";
 
 export default function useRegister() {
   const emailRef = useRef("");
@@ -65,26 +61,17 @@ export default function useRegister() {
       passwordRef.current != "" &&
       confirmRef.current != ""
     ) {
-      const secret = "VPVCNMB6bfxcL9EkVsIIc+985W3H8Ea6eRIyQC+UiEs=";
-      const credentials = `${emailRef.current}:${passwordRef.current}`;
-      const encryptedCredentials = crypto.AES.encrypt(
-        credentials,
-        secret
-      ).toString();
-
       return {
         confirm: true,
-        encryptedCredentials: encryptedCredentials,
+        email: emailRef.current,
+        password: passwordRef.current,
       };
-      // dispatch();
-      // setAuthData({ email: emailRef.current, password: passwordRef.current })
-      // alert(email);
     } else {
       setValidEmail(false);
       setValidPassword(false);
       setValidConfirm(false);
 
-      return false;
+      return { confirm: false };
     }
   }
 

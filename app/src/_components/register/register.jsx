@@ -1,6 +1,6 @@
 import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@mui/material";
+import { Link, CircularProgress } from "@mui/material";
 
 //query
 import { useMutation } from "@tanstack/react-query";
@@ -40,7 +40,9 @@ export default function Register() {
     isConfirm,
   } = useRegister();
 
-  return (
+  return mutation.isPending ? (
+    <CircularProgress />
+  ) : (
     <AuthBox>
       <Header />
       <ContentBox>
@@ -93,10 +95,9 @@ export default function Register() {
         <ContinueButton
           variant="contained"
           onClick={() => {
-            const { confirm, encryptedCredentials } = isConfirm();
+            const { confirm, email, password } = isConfirm();
             if (confirm) {
-              mutation.mutate({ encryptedCredentials: encryptedCredentials });
-              console.log(mutation.data);
+              mutation.mutate({ email, password });
             }
           }}
         >

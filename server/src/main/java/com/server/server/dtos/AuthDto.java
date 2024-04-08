@@ -1,9 +1,9 @@
-package com.server.server.auth;
+package com.server.server.dtos;
 
 import lombok.Data;
 
 @Data
-public class authDto {
+public class AuthDto {
   private String email;
   private String password;
 }

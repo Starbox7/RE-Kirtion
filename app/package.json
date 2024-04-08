@@ -27,7 +27,7 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "https://localhost:8443",
+  "proxy": "https://127.0.0.1:8443",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
