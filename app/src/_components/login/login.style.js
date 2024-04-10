@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Link } from "@mui/material";
 
-const AuthSection = styled(Box)({
+const AuthBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   width: "100vw",
 });
-const Content = styled(Box)({
+const ContentBox = styled(Box)({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
@@ -18,29 +18,46 @@ const Content = styled(Box)({
     marginBottom: "5vh",
   },
 });
-const Title = styled(Box)({
+const TitleBox = styled(Box)({
   fontSize: "50px",
   marginBottom: "20px",
 });
-const Input = styled(TextField)({
+const AuthTextField = styled(TextField)({
   margin: "10px",
   width: "370px",
 });
-const Description = styled(Box)({
+const DescriptionBox = styled(Box)({
   color: "lightgray",
   fontSize: "14px",
 });
-const Signin = styled(Button)({
+const ContinueButton = styled(Button)({
   width: "370px",
   marginTop: "20px",
 });
-const SeparateRowLine = styled(Box)({
+const ContinueLink = styled(Link)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "18px",
+  paddingLeft: "70px",
+  paddingRight: "70px",
+  color: "white",
+  textTransform: "none",
+  width: "200px",
+  height: "40px",
+  margin: "10px",
+  border: "1px solid lightgray",
+  background: "#6EBFFF",
+  textDecoration: "none",
+  fontWeight: "bold",
+});
+const SeparateRowLineBox = styled(Box)({
   backgroundColor: "#ddd",
   width: "370px",
   height: "1px",
   margin: "20px",
 });
-const Social = styled(Button)({
+const SocialButton = styled(Button)({
   fontSize: "15px",
   paddingLeft: "70px",
   paddingRight: "70px",
@@ -50,28 +67,37 @@ const Social = styled(Button)({
   margin: "10px",
   borderColor: "lightgray",
 });
-const Image = styled("img")({
+const Img = styled("img")({
   height: "20px",
   marginRight: "10px",
 });
-const Help = styled(Box)({
+const HelpBox = styled(Box)({
   display: "flex",
 });
-const HelpText = styled(Box)({
+const HelpTextBox = styled(Box)({
   color: "gray",
   marginRight: "5px",
 });
+const ValidBox = styled(Box)({
+  color: "red",
+  fontSize: "14px",
+  display: "flex",
+  alignItems: "center",
+  width: "370px",
+});
 
 export {
-  AuthSection,
-  Content,
-  Title,
-  Input,
-  Description,
-  Signin,
-  SeparateRowLine,
-  Social,
-  Image,
-  Help,
-  HelpText,
+  AuthBox,
+  AuthTextField,
+  ContentBox,
+  ContinueButton,
+  DescriptionBox,
+  HelpBox,
+  HelpTextBox,
+  Img,
+  SeparateRowLineBox,
+  SocialButton,
+  TitleBox,
+  ValidBox,
+  ContinueLink,
 };

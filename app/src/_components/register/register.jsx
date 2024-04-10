@@ -21,6 +21,7 @@ import {
   SocialButton,
   TitleBox,
   ValidBox,
+  ContinueLink,
 } from "./register.style";
 
 import { Apple, Google, Kakao } from "../../assets/noticon";
@@ -45,7 +46,20 @@ export default function Register() {
   ) : (
     <>
       {mutation.isSuccess ? (
-        {}
+        <AuthBox>
+          <Header />
+          <ContentBox>
+            <TitleBox>
+              Authentication mail has been sent, please check your mailbox!
+            </TitleBox>
+            <ContinueLink href="/login">CONTINUE</ContinueLink>
+            <SeparateRowLineBox />
+            <HelpBox>
+              <HelpTextBox>Hasn't the mail arrived?</HelpTextBox>
+              <Link href="">Resend email</Link>
+            </HelpBox>
+          </ContentBox>
+        </AuthBox>
       ) : (
         <AuthBox>
           <Header />
@@ -127,6 +141,10 @@ export default function Register() {
             <HelpBox>
               <HelpTextBox>have an account?</HelpTextBox>
               <Link href="/login">go to Login</Link>
+            </HelpBox>
+            <HelpBox>
+              <HelpTextBox>Hasn't the mail arrived?</HelpTextBox>
+              <Link href="">Resend email</Link>
             </HelpBox>
           </ContentBox>
         </AuthBox>

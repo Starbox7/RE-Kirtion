@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, Link } from "@mui/material";
 
 const AuthBox = styled(Box)({
   display: "flex",
@@ -33,6 +33,23 @@ const DescriptionBox = styled(Box)({
 const ContinueButton = styled(Button)({
   width: "370px",
   marginTop: "20px",
+});
+const ContinueLink = styled(Link)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "18px",
+  paddingLeft: "70px",
+  paddingRight: "70px",
+  color: "white",
+  textTransform: "none",
+  width: "200px",
+  height: "40px",
+  margin: "10px",
+  border: "1px solid lightgray",
+  background: "#6EBFFF",
+  textDecoration: "none",
+  fontWeight: "bold",
 });
 const SeparateRowLineBox = styled(Box)({
   backgroundColor: "#ddd",
@@ -82,4 +99,5 @@ export {
   SocialButton,
   TitleBox,
   ValidBox,
+  ContinueLink,
 };

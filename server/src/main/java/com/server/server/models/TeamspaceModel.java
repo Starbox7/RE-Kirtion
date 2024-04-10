@@ -52,7 +52,7 @@ public class TeamspaceModel {
     private LocalDateTime created;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "teamspace", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "teamspace", cascade = CascadeType.ALL)
     @Builder.Default
     private List<TeamMemberModel> members = new ArrayList<>();
     public void addMember(TeamMemberModel teamMemberModel){
@@ -60,7 +60,7 @@ public class TeamspaceModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "teamspace", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "teamspace", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageModel> pages = new ArrayList<>();
     public void addPage(PageModel pageModel){

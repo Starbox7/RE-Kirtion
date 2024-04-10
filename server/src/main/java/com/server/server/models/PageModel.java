@@ -55,7 +55,7 @@ public class PageModel {
     private boolean softDelete;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageModel> pages = new ArrayList<>();
     public void addPage(PageModel pageModel){
@@ -63,7 +63,7 @@ public class PageModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageSettingModel> pageSettings = new ArrayList<>();
     public void addPageSetting(PageSettingModel pageSettingModel){
@@ -71,7 +71,7 @@ public class PageModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageWebShareModel> pageWebShares = new ArrayList<>();
     public void addPageWebShare(PageWebShareModel pageWebShareModel){
@@ -79,7 +79,7 @@ public class PageModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageUpdateModel> pageUpdates = new ArrayList<>();
     public void addPageUpdate(PageUpdateModel pageUpdateModel){
@@ -87,7 +87,7 @@ public class PageModel {
     }
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "page", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
     @Builder.Default
     private List<PageSnapshotModel> pageSnapshots = new ArrayList<>();
     public void addPageSnapshot(PageSnapshotModel pageSnapshotModel){

@@ -176,3 +176,14 @@ ALTER TABLE "payment" ADD FOREIGN KEY ("user_uuid") REFERENCES "user" ("uuid");
 ALTER TABLE "recipient" ADD FOREIGN KEY ("user_uuid") REFERENCES "user" ("uuid");
 
 ALTER TABLE "vat" ADD FOREIGN KEY ("user_uuid") REFERENCES "user" ("uuid");
+
+DO
+$do$
+DECLARE
+   r RECORD;
+BEGIN
+   FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') LOOP
+      EXECUTE 'DROP TABLE IF EXISTS public.' || quote_ident(r.tablename) || ' CASCADE';
+   END LOOP;
+END
+$do$;
