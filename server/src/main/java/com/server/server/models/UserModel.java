@@ -3,8 +3,10 @@ package com.server.server.models;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.CascadeType;
@@ -27,7 +29,7 @@ import lombok.ToString;
 @Data
 @Builder
 @Entity
-@Table(name = "user")
+@Table(name = "kirtion_user")
 public class UserModel {
     @Id
     @GeneratedValue(generator = "UUID")
@@ -46,8 +48,15 @@ public class UserModel {
     @Column(nullable = false, length = 255)
     private String plan;
 
+    @CreatedDate
     @Column(nullable = false)
     private LocalDateTime created;
+
+    @Column(name = "is_valid", nullable = false)
+    private Boolean isValid;
+
+    @Column(name = "token", nullable = false)
+    private String token;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)

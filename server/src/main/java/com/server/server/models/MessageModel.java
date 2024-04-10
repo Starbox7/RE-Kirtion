@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class MessageModel {
     @Column(nullable = false)
     private String title;
 
+    @CreatedDate
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }

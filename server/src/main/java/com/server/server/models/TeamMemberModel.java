@@ -2,9 +2,8 @@ package com.server.server.models;
 
 import java.time.LocalDateTime;
 
-import java.util.*;
-
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -31,6 +30,7 @@ public class TeamMemberModel {
     @JoinColumn(name = "user_uuid")
     private UserModel user;
 
+    @CreatedDate
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 }
