@@ -9,5 +9,7 @@ import com.server.server.models.UserModel;
 public interface IUserRepo extends JpaRepository<UserModel, String> {
   boolean existsByEmail(String email);
 
-  Optional<UserModel> findByToken(String token);
+  Optional<UserModel> findUserByToken(String token);
+
+  Optional<UserModel> findUserByEmail(String email);
 }

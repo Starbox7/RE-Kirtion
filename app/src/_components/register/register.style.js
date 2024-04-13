@@ -52,10 +52,11 @@ const ContinueLink = styled(Link)({
   fontWeight: "bold",
 });
 const SeparateRowLineBox = styled(Box)({
-  backgroundColor: "#ddd",
   width: "370px",
   height: "1px",
-  margin: "20px",
+  borderTop: "1px solid #ddd",
+  marginBottom: "20px",
+  marginTop: "20px",
 });
 const SocialButton = styled(Button)({
   fontSize: "15px",

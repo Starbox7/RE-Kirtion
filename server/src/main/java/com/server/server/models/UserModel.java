@@ -1,12 +1,15 @@
 package com.server.server.models;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.*;
+import java.util.*;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
@@ -23,11 +26,22 @@ import lombok.ToString;
 @Builder
 @Entity
 @Table(name = "kirtion_user")
-public class UserModel {
+public class UserModel implements UserDetails{
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String uuid;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
 
     @Column(unique = true, nullable = false, length = 255)
     private String email;
@@ -113,5 +127,47 @@ public class UserModel {
     private List<VatModel> vats = new ArrayList<>();
     public void addVat(VatModel vatModel){
       vats.add(vatModel);
+    }
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<PersonalspaceModel> personalspaces = new ArrayList<>();
+    public void addPersonalspace(PersonalspaceModel personalspaceModel){
+      personalspaces.add(personalspaceModel);
+    }
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<CurrentModel> currents = new ArrayList<>();
+    public void addCurrent(CurrentModel currentModel){
+      currents.add(currentModel);
+    }
+
+    @Override
+    public String getUsername() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'isAccountNonExpired'");
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'isAccountNonLocked'");
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'isCredentialsNonExpired'");
+    }
+    @Override
+    public boolean isEnabled() {
+      // TODO Auto-generated method stub
+      throw new UnsupportedOperationException("Unimplemented method 'isEnabled'");
     }
 }

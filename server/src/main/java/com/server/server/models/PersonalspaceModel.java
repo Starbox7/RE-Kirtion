@@ -30,54 +30,31 @@ import lombok.ToString;
 @Data
 @Builder
 @Entity
-@Table(name = "workspace")
-public class WorkspaceModel {
-    @Id
+@Table(name = "personalspace")
+public class PersonalspaceModel {
+  @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String uuid;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "workspace_uuid")
+    private WorkspaceModel workspace;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_uuid")
     private UserModel user;
-
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    private String logo;
-
-    @Column(nullable = false)
-    private String plan;
-
-    @Column(nullable = false)
-    private String domain;
 
     @CreatedDate
     @Column(nullable = false)
     private LocalDateTime created;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personalspace", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<TeamspaceModel> teamspaces = new ArrayList<>();
-    public void addTeamspace(TeamspaceModel teamspaceModel){
-      teamspaces.add(teamspaceModel);
+    private List<PageModel> pages = new ArrayList<>();
+    public void addPage(PageModel pageModel){
+      pages.add(pageModel);
     }
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<PersonalspaceModel> personalspaces = new ArrayList<>();
-    public void addPersonalspace(PersonalspaceModel personalspaceModel){
-      personalspaces.add(personalspaceModel);
-    }
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "workspace", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<CurrentModel> currents = new ArrayList<>();
-    public void addCurrent(CurrentModel currentModel){
-      currents.add(currentModel);
-    }
 }

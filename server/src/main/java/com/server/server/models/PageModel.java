@@ -23,16 +23,16 @@ public class PageModel {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String uuid;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "workspace_uuid", nullable = false)
-    private WorkspaceModel workspace;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "personalspace_uuid")
+    private PersonalspaceModel personalspace;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "teamspace_uuid", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "teamspace_uuid")
     private TeamspaceModel teamspace;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "page_uuid", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "page_uuid")
     private PageModel page;
 
     @CreatedDate
@@ -53,6 +53,9 @@ public class PageModel {
 
     @Column(name = "soft_delete", nullable = false)
     private boolean softDelete;
+
+    @Column(name = "route", nullable = false)
+    private String route;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
@@ -92,5 +95,13 @@ public class PageModel {
     private List<PageSnapshotModel> pageSnapshots = new ArrayList<>();
     public void addPageSnapshot(PageSnapshotModel pageSnapshotModel){
       pageSnapshots.add(pageSnapshotModel);
+    }
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<CurrentModel> currents = new ArrayList<>();
+    public void addCurrent(CurrentModel currentModel){
+      currents.add(currentModel);
     }
 }

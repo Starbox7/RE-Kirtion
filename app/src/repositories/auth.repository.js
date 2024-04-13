@@ -6,3 +6,10 @@ export function registerRepo(data) {
     password: data.password,
   });
 }
+
+export function loginRepo(data) {
+  return axios.post("/auth/login", {
+    email: data.email,
+    password: data.password,
+  });
+}

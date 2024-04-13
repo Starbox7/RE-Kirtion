@@ -1,15 +1,12 @@
 import { useRef, useState } from "react";
+import cookieService from "../../storages/token.cookie";
 
 export default function useLogin() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const confirmRef = useRef("");
-  // const email = useSelector((state) => state.auth.email);
 
   const [validEmail, setValidEmail] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
-  const [validConfirm, setValidConfirm] = useState(true);
-  // const dispatch = useDispatch();
 
   function onChangeEmail(event) {
     emailRef.current = event.target.value;
@@ -27,39 +24,25 @@ export default function useLogin() {
   }
 
   function isValidPassword(password) {
-    const hasUpperCase = /[A-Z]/.test(password);
-    const hasLowerCase = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSpecialChar = /[\W_]/.test(password); // \W는 숫자와 문자가 아닌 문자, _ 포함
-    const isLongEnough = password.length >= 8;
+    // const hasUpperCase = /[A-Z]/.test(password);
+    // const hasLowerCase = /[a-z]/.test(password);
+    // const hasNumber = /[0-9]/.test(password);
+    // const hasSpecialChar = /[\W_]/.test(password); // \W는 숫자와 문자가 아닌 문자, _ 포함
+    // const isLongEnough = password.length >= 8;
 
-    return (
-      hasUpperCase &&
-      hasLowerCase &&
-      hasNumber &&
-      hasSpecialChar &&
-      isLongEnough
-    );
-  }
-
-  function onChangeConfirm(event) {
-    confirmRef.current = event.target.value;
-    setValidConfirm(confirmPassword(event.target.value));
-  }
-
-  function confirmPassword(confirm) {
-    if (confirm == passwordRef.current) return true;
-    else return false;
+    if (password != "") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   function isConfirm() {
     if (
       validEmail &&
       validPassword &&
-      validConfirm &&
       emailRef.current != "" &&
-      passwordRef.current != "" &&
-      confirmRef.current != ""
+      passwordRef.current != ""
     ) {
       return {
         confirm: true,
@@ -69,10 +52,17 @@ export default function useLogin() {
     } else {
       setValidEmail(false);
       setValidPassword(false);
-      setValidConfirm(false);
 
       return { confirm: false };
     }
+  }
+
+  function completeLogin(mutation, navigate) {
+    const accessToken = mutation.data.data.accessToken;
+    const refreshToken = mutation.data.data.refreshToken;
+    cookieService.setTokens(accessToken, refreshToken);
+
+    return navigate("/home");
   }
 
   return {
@@ -80,8 +70,7 @@ export default function useLogin() {
     validEmail,
     onChangePassword,
     validPassword,
-    onChangeConfirm,
-    validConfirm,
     isConfirm,
+    completeLogin,
   };
 }

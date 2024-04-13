@@ -1,6 +1,7 @@
 import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "@mui/material";
+import { Link, CircularProgress } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import useLogin from "./useLogin";
 
@@ -9,7 +10,6 @@ import {
   AuthTextField,
   ContentBox,
   ContinueButton,
-  DescriptionBox,
   HelpBox,
   HelpTextBox,
   Img,
@@ -17,24 +17,36 @@ import {
   SocialButton,
   TitleBox,
   ValidBox,
-  ContinueLink,
 } from "./login.style";
 
 import { Apple, Google, Kakao } from "../../assets/noticon";
 import Header from "../common/header/header";
+import { useMutation } from "@tanstack/react-query";
+import { loginRepo } from "../../repositories/auth.repository";
+import { useEffect } from "react";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const mutation = useMutation({ mutationFn: loginRepo });
+
   const {
     onChangeEmail,
     validEmail,
     onChangePassword,
-    validPassword,
-    onChangeConfirm,
-    validConfirm,
     isConfirm,
+    validPassword,
+    completeLogin,
   } = useLogin();
 
-  return (
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      completeLogin(mutation, navigate);
+    }
+  }, [completeLogin, mutation, navigate]);
+
+  return mutation.isPending ? (
+    <CircularProgress />
+  ) : (
     <AuthBox>
       <Header />
       <ContentBox>
@@ -61,9 +73,7 @@ export default function Login() {
               icon={faShieldHalved}
               style={{ marginRight: "3px" }}
             />
-            Your password must be at least 8 characters long and include at
-            least one uppercase letter, one lowercase letter, one number, and
-            one special character.
+            Please enter your password
           </ValidBox>
         )}
         <ContinueButton
@@ -71,6 +81,7 @@ export default function Login() {
           onClick={() => {
             const { confirm, email, password } = isConfirm();
             if (confirm) {
+              mutation.mutate({ email, password });
             }
           }}
         >
