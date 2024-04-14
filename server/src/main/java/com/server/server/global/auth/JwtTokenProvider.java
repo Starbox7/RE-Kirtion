@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import com.server.server.dtos.TokenDto;
 import com.server.server.status.auth.UnauthorizedTokenException;
@@ -114,24 +115,24 @@ public class JwtTokenProvider {
     }
  
     // JWT 토큰을 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
-    public Authentication getAuthentication(String accessToken) {
-        // 토큰 복호화
-        Claims claims = parseClaims(accessToken);
- 
-        if (claims.get("auth") == null) {
-            throw new UnauthorizedTokenException("Unauthorized Token");
+        public Authentication getAuthentication(String accessToken) {
+            Claims claims = parseClaims(accessToken);
+            // 'auth' 클레임의 존재와 비어 있지 않은지 확인
+            String authClaims = claims.get("auth", String.class);
+            if (authClaims == null || authClaims.isEmpty()) {
+                throw new UnauthorizedTokenException("Unauthorized Token: 'auth' claim is missing or empty");
+            }
+            // 권한 정보를 권한 객체로 변환
+            Collection<? extends GrantedAuthority> authorities = Arrays.stream(authClaims.split(","))
+                    .filter(StringUtils::hasText)
+                    .map(String::trim)
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+
+            UserDetails principal = new User(claims.getSubject(), "", authorities);
+            return new UsernamePasswordAuthenticationToken(principal, "", authorities);
         }
- 
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("auth").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
- 
-        // UserDetails 객체를 만들어서 Authentication 리턴
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
-    }
+
  
     // 토큰 정보를 검증하는 메서드
     public boolean validateAccessToken(String token) {

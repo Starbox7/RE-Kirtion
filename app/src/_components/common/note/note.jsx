@@ -1,6 +1,6 @@
 import { ContentBox, PageBox, RoutingBarBox, TitleBox } from "./page.style";
 
-export default function Page() {
+export default function Note() {
   return (
     <PageBox>
       <RoutingBarBox></RoutingBarBox>

@@ -8,5 +8,5 @@ import com.server.server.models.CurrentModel;
 import com.server.server.models.UserModel;
 
 public interface ICurrentRepo extends JpaRepository<CurrentModel, String> {
-  Optional<CurrentModel> findCurrentByUser(UserModel user);
+  Optional<CurrentModel> findCurrentByUserUuid(String userUuid);
 }

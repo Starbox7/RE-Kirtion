@@ -3,31 +3,30 @@ package com.server.server.dtos;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.server.server.models.PageModel;
-import com.server.server.models.TeamMemberModel;
-import com.server.server.models.TeamspaceModel;
-import com.server.server.models.WorkspaceModel;
+import com.server.server.dtos.domainDto.PageDto;
+import com.server.server.dtos.domainDto.TeamspaceDto;
+import com.server.server.dtos.domainDto.WorkspaceDto;
 
 import lombok.Data;
 
 @Data
 public class InitDto {
-    private PageModel currentPage;
-    private WorkspaceModel workspace;
+    
+    @JsonProperty(value = "current_page")
+    private PageDto currentPage = new PageDto();
+    @JsonProperty(value = "current_workspace")
+    private WorkspaceDto currentWorkspace = new WorkspaceDto();
+    @JsonProperty(value = "personal_page_list")
+    private List<PageDto> personalPageList = new ArrayList<>();
+    @JsonProperty(value = "page_list_in_teamspace_list")
+    private List<PageListInTeamspace> pageListInTeamspacesList = new ArrayList<>();
 
-    @JsonProperty("personalspace_page_list")
-    private List<PageModel> pages = new ArrayList<>();
-
-    @JsonProperty("teamspace_list")
-    private List<TeamspaceDto> teamspaces = new ArrayList<>();
-
-    public static class TeamspaceDto {
-        @JsonProperty("teamspace")
-        private TeamspaceModel teamspace;
-
-        @JsonProperty("teamspace_page_list")
-        private List<PageModel> pages = new ArrayList<>();
+    @Data
+    public static class PageListInTeamspace {
+        private TeamspaceDto teamspace;
+        @JsonProperty(value = "teamspace_page_list")
+        private List<PageDto> teamspacePageList = new ArrayList<>();
     }
 }
-

@@ -7,9 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.server.server.models.PageModel;
 import com.server.server.models.PersonalspaceModel;
+import com.server.server.models.TeamspaceModel;
 
 public interface IPageRepo extends JpaRepository<PageModel, String> {
-  Optional<PageModel> findPageById(PageModel page);
+  Optional<PageModel> findPageByUuid(String uuid);
 
-  List<PageModel> findAllPageByPersonalspace(PersonalspaceModel personalspace); 
+  List<PageModel> findAllPageByPersonalspaceUuid(String personalspaceUuid); 
+  List<PageModel> findAllPageByTeamspaceUuid(String teamspaceUuid);
 }

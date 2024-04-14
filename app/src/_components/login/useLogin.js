@@ -58,8 +58,8 @@ export default function useLogin() {
   }
 
   function completeLogin(mutation, navigate) {
-    const accessToken = mutation.data.data.accessToken;
-    const refreshToken = mutation.data.data.refreshToken;
+    const accessToken = mutation.data.headers["access-token"];
+    const refreshToken = mutation.data.headers["refresh-token"];
     cookieService.setTokens(accessToken, refreshToken);
 
     return navigate("/home");

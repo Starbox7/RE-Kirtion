@@ -60,8 +60,7 @@ public class AuthController {
     UserModel user = authService.findUserByToken(token);
     boolean isValid = authService.verificationComplete(user);
     if(isValid){
-      String name = authService.createNameByEmail(user.getEmail());
-      initService.kirtionInit(user, name);
+      initService.kirtionInit(user);
     }
 
     String content = authService.loadCompleteVerificationHtml();
@@ -70,7 +69,7 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public InitDto login(@RequestBody AuthDto authDto) {
+  public ResponseEntity<String> login(@RequestBody AuthDto authDto) {
     String email = authDto.getEmail();
     String password = authDto.getPassword();
 
@@ -86,10 +85,8 @@ public class AuthController {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Access-Token", accessToken);
     headers.add("Refresh-Token", refreshToken);
-
     
-    
-    return null;
+    return ResponseEntity.ok().headers(headers).body("Success Login");
   }
   
     
