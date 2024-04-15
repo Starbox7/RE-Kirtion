@@ -1,7 +1,7 @@
 import axios from "axios";
 
-export function registerRepo(data) {
-  return axios.post("/auth/register", {
+export async function registerRepo(data) {
+  return await axios.post("/auth/register", {
     email: data.email,
     password: data.password,
   });

@@ -1,7 +1,6 @@
 import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 import useLogin from "./useLogin";
 
@@ -23,10 +22,8 @@ import { Apple, Google, Kakao } from "../../assets/noticon";
 import Header from "../common/header/header";
 import { useMutation } from "@tanstack/react-query";
 import { loginRepo } from "../../repositories/auth.repository";
-import { useEffect } from "react";
 
 export default function Login() {
-  const navigate = useNavigate();
   const mutation = useMutation({ mutationFn: loginRepo });
 
   const {
@@ -35,14 +32,8 @@ export default function Login() {
     onChangePassword,
     isConfirm,
     validPassword,
-    completeLogin,
+    setToken,
   } = useLogin();
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      completeLogin(mutation, navigate);
-    }
-  }, [completeLogin, mutation, navigate]);
 
   return mutation.isPending ? (
     <CircularProgress />
@@ -78,10 +69,11 @@ export default function Login() {
         )}
         <ContinueButton
           variant="contained"
-          onClick={() => {
-            const { confirm, email, password } = isConfirm();
+          onClick={async () => {
+            const { email, password, confirm } = isConfirm();
             if (confirm) {
-              mutation.mutate({ email, password });
+              const respons = await mutation.mutateAsync({ email, password });
+              setToken(respons);
             }
           }}
         >

@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 import cookieService from "../../storages/token.cookie";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAuthenticationState } from "../../features/auth.slice";
 
 export default function useLogin() {
   const emailRef = useRef("");
@@ -7,6 +10,10 @@ export default function useLogin() {
 
   const [validEmail, setValidEmail] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   function onChangeEmail(event) {
     emailRef.current = event.target.value;
@@ -24,12 +31,6 @@ export default function useLogin() {
   }
 
   function isValidPassword(password) {
-    // const hasUpperCase = /[A-Z]/.test(password);
-    // const hasLowerCase = /[a-z]/.test(password);
-    // const hasNumber = /[0-9]/.test(password);
-    // const hasSpecialChar = /[\W_]/.test(password); // \W는 숫자와 문자가 아닌 문자, _ 포함
-    // const isLongEnough = password.length >= 8;
-
     if (password != "") {
       return true;
     } else {
@@ -37,18 +38,17 @@ export default function useLogin() {
     }
   }
 
-  function isConfirm() {
+  function isConfirm(mutation) {
     if (
       validEmail &&
       validPassword &&
       emailRef.current != "" &&
       passwordRef.current != ""
     ) {
-      return {
-        confirm: true,
-        email: emailRef.current,
-        password: passwordRef.current,
-      };
+      const email = emailRef.current;
+      const password = passwordRef.current;
+
+      return { email, password, confirm: true };
     } else {
       setValidEmail(false);
       setValidPassword(false);
@@ -57,12 +57,14 @@ export default function useLogin() {
     }
   }
 
-  function completeLogin(mutation, navigate) {
-    const accessToken = mutation.data.headers["access-token"];
-    const refreshToken = mutation.data.headers["refresh-token"];
+  function setToken(response) {
+    const accessToken = response.headers["access-token"];
+    const refreshToken = response.headers["refresh-token"];
     cookieService.setTokens(accessToken, refreshToken);
 
-    return navigate("/home");
+    dispatch(setAuthenticationState(true));
+
+    navigate("/home");
   }
 
   return {
@@ -71,6 +73,6 @@ export default function useLogin() {
     onChangePassword,
     validPassword,
     isConfirm,
-    completeLogin,
+    setToken,
   };
 }
