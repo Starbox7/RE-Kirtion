@@ -11,7 +11,19 @@ import {
   SpaceBox,
   TitleBox,
   IconBox,
+  PageContentBox,
+  BlockBox,
 } from "./home.style";
+
+const generateLongText = () => {
+  let longText = "";
+  for (let i = 0; i < 1000; i++) {
+    longText += "가"; // 긴 텍스트를 생성하기 위해 한글자씩 추가합니다.
+  }
+  return longText;
+};
+
+const longText = generateLongText();
 
 export default function Home() {
   const { isLoading, isError, data, error } = useQuery({
@@ -22,15 +34,21 @@ export default function Home() {
 
   return (
     <SpaceBox>
-      <SideBarBox>test</SideBarBox>
+      <SideBarBox></SideBarBox>
       <PageBox>
-        <RoutingBarBox>rbb</RoutingBarBox>
-        <CoverBox>cb</CoverBox>
-        <IconBox>
-          <Logo />
-        </IconBox>
-        <TitleBox>tb</TitleBox>
-        <ContentBox>cb</ContentBox>
+        <RoutingBarBox></RoutingBarBox>
+        <PageContentBox>
+          {/* <IconBox>
+            <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1570106347/noticon/hx52ypkqqdzjdvd8iaid.svg" />
+          </IconBox> */}
+          <CoverBox></CoverBox>
+          <TitleBox></TitleBox>
+          <BlockBox>
+            <ContentBox>{longText}</ContentBox>
+            <ContentBox>{longText}</ContentBox>
+            <ContentBox>{longText}</ContentBox>
+          </BlockBox>
+        </PageContentBox>
       </PageBox>
     </SpaceBox>
   );
