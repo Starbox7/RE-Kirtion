@@ -1,6 +1,6 @@
 import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, CircularProgress } from "@mui/material";
+import { Link, CircularProgress, Box } from "@mui/material";
 
 import useLogin from "./useLogin";
 
@@ -36,7 +36,15 @@ export default function Login() {
   } = useLogin();
 
   return mutation.isPending ? (
-    <CircularProgress />
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alineItems: "center",
+      }}
+    >
+      <CircularProgress />
+    </Box>
   ) : (
     <AuthBox>
       <Header />

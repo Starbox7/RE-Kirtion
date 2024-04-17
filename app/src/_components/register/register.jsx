@@ -1,6 +1,6 @@
 import { faShieldHalved } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, CircularProgress } from "@mui/material";
+import { Link, CircularProgress, Box } from "@mui/material";
 
 //query
 import { useMutation } from "@tanstack/react-query";
@@ -42,7 +42,17 @@ export default function Register() {
   } = useRegister();
 
   return mutation.isPending ? (
-    <CircularProgress />
+    <Box
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
+      <CircularProgress />
+    </Box>
   ) : (
     <>
       {mutation.isSuccess ? (

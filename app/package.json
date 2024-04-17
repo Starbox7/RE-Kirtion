@@ -22,6 +22,7 @@
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.1",
     "react-scripts": "5.0.1",
+    "react-tooltip": "^5.26.3",
     "web-vitals": "^2.1.4"
   },
   "proxy": "https://127.0.0.1:8443",

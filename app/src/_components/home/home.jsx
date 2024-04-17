@@ -1,29 +1,19 @@
 import { useQuery } from "@tanstack/react-query";
 import spaceRepo from "../../repositories/space.repository";
 import useHome from "./useHome";
-import Logo from "../common/kirby/kirby";
+import { Lorem, TestPageText } from "../../constants/constant";
 import {
   ContentBox,
-  CoverBox,
   PageBox,
-  RoutingBarBox,
-  SideBarBox,
   SpaceBox,
   TitleBox,
   IconBox,
   PageContentBox,
   BlockBox,
+  Img,
 } from "./home.style";
-
-const generateLongText = () => {
-  let longText = "";
-  for (let i = 0; i < 1000; i++) {
-    longText += "가"; // 긴 텍스트를 생성하기 위해 한글자씩 추가합니다.
-  }
-  return longText;
-};
-
-const longText = generateLongText();
+import Sidebar from "../common/sidebar/sidebar";
+import Routingbar from "../common/routingbar/routingbar";
 
 export default function Home() {
   const { isLoading, isError, data, error } = useQuery({
@@ -34,19 +24,21 @@ export default function Home() {
 
   return (
     <SpaceBox>
-      <SideBarBox></SideBarBox>
+      <Sidebar />
       <PageBox>
-        <RoutingBarBox></RoutingBarBox>
+        <Routingbar />
         <PageContentBox>
-          {/* <IconBox>
-            <img src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1570106347/noticon/hx52ypkqqdzjdvd8iaid.svg" />
-          </IconBox> */}
-          <CoverBox></CoverBox>
-          <TitleBox></TitleBox>
+          <Img src="https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+          <IconBox>
+            <img
+              style={{ width: "90px" }}
+              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567008788/noticon/bqjhb6xvljt9viccy6lh.png"
+              alt=""
+            />
+          </IconBox>
+          <TitleBox>Kirtion Title</TitleBox>
           <BlockBox>
-            <ContentBox>{longText}</ContentBox>
-            <ContentBox>{longText}</ContentBox>
-            <ContentBox>{longText}</ContentBox>
+            <ContentBox>{TestPageText()}</ContentBox>
           </BlockBox>
         </PageContentBox>
       </PageBox>
