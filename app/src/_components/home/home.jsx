@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import spaceRepo from "../../repositories/space.repository";
 import useHome from "./useHome";
-import { Lorem, TestPageText } from "../../constants/constant";
+import { TestPageText } from "../../constants/constant";
 import {
-  ContentBox,
+  ContentTextField,
   PageBox,
   SpaceBox,
-  TitleBox,
+  TitleTextarea,
   IconBox,
   PageContentBox,
   BlockBox,
@@ -14,6 +14,7 @@ import {
 } from "./home.style";
 import Sidebar from "../common/sidebar/sidebar";
 import Routingbar from "../common/routingbar/routingbar";
+import Textarea from "@mui/joy/Textarea";
 
 export default function Home() {
   const { isLoading, isError, data, error } = useQuery({
@@ -36,9 +37,29 @@ export default function Home() {
               alt=""
             />
           </IconBox>
-          <TitleBox>Kirtion Title</TitleBox>
+          <TitleTextarea
+            placeholder="Untitled"
+            sx={{
+              "&:focus-visible": {
+                outline: "none",
+              },
+            }}
+          />
           <BlockBox>
-            <ContentBox>{TestPageText()}</ContentBox>
+            <ContentTextField
+              multiline
+              variant="standard"
+              // placeholder="Write something."
+              // label="Write something, or press 'space' for AI, '/' for commands..."
+              InputProps={{
+                disableUnderline: true,
+              }}
+            />
+            <Textarea
+              sx={{
+                "--Textarea-focusedHighlight": "transparent",
+              }}
+            />
           </BlockBox>
         </PageContentBox>
       </PageBox>

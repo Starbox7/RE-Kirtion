@@ -40,7 +40,9 @@ export default function Login() {
       style={{
         display: "flex",
         justifyContent: "center",
-        alineItems: "center",
+        alignItems: "center",
+        width: "100vw",
+        height: "100vh",
       }}
     >
       <CircularProgress />

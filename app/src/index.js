@@ -10,6 +10,10 @@ const globalStyles = css`
   #root {
     margin: 0;
   }
+
+  body::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

@@ -63,6 +63,7 @@ function RouteSet({ image, text }) {
 }
 const RouteBarOptionBox = styled(Box)({
   display: "flex",
+  marginRight: "15px",
 });
 const ShareButton = styled(Button)({
   textTransform: "none",
@@ -76,7 +77,6 @@ function RouteBarOptionButtonSet({ icon }) {
         icon={icon}
         style={{
           color: "#4c4c4c",
-          fontWeight: "bold",
         }}
       />
     </RouteBarOptionButton>
@@ -85,9 +85,9 @@ function RouteBarOptionButtonSet({ icon }) {
 const RouteBarOptionButton = styled(Button)({
   display: "flex",
   justifyContent: "center",
-  width: "30px",
-  minWidth: "30px",
-  height: "30px",
+  width: "31px",
+  minWidth: "31px",
+  height: "31px",
 });
 
 export {
