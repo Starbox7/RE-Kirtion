@@ -35,15 +35,21 @@ import {
   faRectangleList,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setSidebarState } from "../../../features/state.slice";
+import {
+  setSidebarState,
+  setUpdateBlockState,
+  setUpdateState,
+} from "../../../features/state.slice";
 import { useMutation } from "@tanstack/react-query";
 import spaceRepo from "../../../repositories/space.repository";
 import useAuthorize from "../hooks/useAuthorize";
 import {
   setCurrentPage,
   setCurrentWorkspace,
-  setPersonalspacePageList,
+  // setPersonalspacePageList,
   setPageListInTeamspaceList,
+  setBlockListInPersonalPageList,
+  setCurrentPageBlockList,
 } from "../../../features/space.slice";
 
 export default function Sidebar() {
@@ -51,8 +57,11 @@ export default function Sidebar() {
   const currentWorkspaceData = useSelector(
     (state) => state.space.currentWorkspace
   );
-  const personalPageList = useSelector(
-    (state) => state.space.personalspacePageList
+  // const personalPageList = useSelector(
+  //   (state) => state.space.personalspacePageList
+  // );
+  const blockListInPersonalPageList = useSelector(
+    (state) => state.space.blockListInPersonalPageList
   );
   const sidebarState = useSelector((state) => state.state.sidebarState);
   const dispatch = useDispatch();
@@ -95,9 +104,11 @@ export default function Sidebar() {
             const uuid = currentWorkspaceData.uuid;
             await mutation.mutateAsync({ accessToken, uuid }).then((result) => {
               dispatch(setCurrentPage(result.data.current_page));
-
               dispatch(
-                setPersonalspacePageList(result.data.personal_page_list)
+                // setPersonalspacePageList(result.data.personal_page_list)
+                setBlockListInPersonalPageList(
+                  result.data.block_list_in_personal_page_list
+                )
               );
             });
           }}
@@ -130,13 +141,13 @@ export default function Sidebar() {
             <SpaceAddIcon />
           </SpaceAddButton>
         </SpaceAddBox>
-        {personalPageList.map((page) => (
+        {blockListInPersonalPageList.map((page) => (
           <PageSet
-            image={page.icon}
-            text={page.title}
+            image={page.personalPage.icon}
+            text={page.personalPage.title}
             onClick={async () => {
               const accessToken = getAccessToken();
-              const pageUuid = page.uuid;
+              const pageUuid = page.personalPage.uuid;
               const workspaceUuid = currentWorkspaceData.uuid;
               await selectPageMutation
                 .mutateAsync({
@@ -145,8 +156,15 @@ export default function Sidebar() {
                   workspaceUuid,
                 })
                 .then((result) => {
-                  console.log(result.data);
-                  dispatch(setCurrentPage(result.data));
+                  dispatch(setUpdateState(true));
+                  dispatch(setUpdateBlockState(true));
+                  dispatch(setCurrentPage(result.data.current_page));
+                  dispatch(
+                    setCurrentPageBlockList(result.data.current_page_block_list)
+                  );
+                  // dispatch(
+                  //   setCurrentPageBlockList(result.data.current_page_block_list)
+                  // );
                 });
             }}
           />

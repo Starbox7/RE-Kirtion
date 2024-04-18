@@ -4,11 +4,13 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.server.server.interfaces.IBlockRepo;
 import com.server.server.interfaces.ICurrentRepo;
 import com.server.server.interfaces.IPageRepo;
 import com.server.server.interfaces.IPersonalspaceRepo;
 import com.server.server.interfaces.ITeamspaceRepo;
 import com.server.server.interfaces.IWorkspaceRepo;
+import com.server.server.models.BlockModel;
 import com.server.server.models.CurrentModel;
 import com.server.server.models.PageModel;
 import com.server.server.models.PersonalspaceModel;
@@ -16,7 +18,9 @@ import com.server.server.models.TeamspaceModel;
 import com.server.server.models.WorkspaceModel;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SpaceService {
@@ -25,6 +29,7 @@ public class SpaceService {
   private final IPageRepo iPageRepo;
   private final ICurrentRepo iCurrentRepo;
   private final IWorkspaceRepo iWorkspaceRepo;
+  private final IBlockRepo iBlockRepo;
 
   public PersonalspaceModel findPersonalspaceByUuid (String uuid) {
     Optional<PersonalspaceModel> personalspaceModel = iPersonalspaceRepo.findPersonalspaceByUuid(uuid);
@@ -80,5 +85,19 @@ public class SpaceService {
     this.iPageRepo.save(pageModel);
 
     return pageModel;
+  }
+
+  public BlockModel findBlockByUuid (String uuid){
+
+    Optional<BlockModel> blockModel = iBlockRepo.findBlockByUuid(uuid);
+
+    return blockModel.get();
+  }
+
+  public void updateBlock (BlockModel blockModel, String type, String data){
+    blockModel.setType(type);
+    blockModel.setData(data);
+
+    this.iBlockRepo.save(blockModel);
   }
 }

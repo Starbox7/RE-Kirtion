@@ -14,6 +14,7 @@ const initialState = {
     teamspaceUuid: "",
     parentPageUuid: "",
   },
+  currentPageBlockList: [],
   currentWorkspace: {
     uuid: "",
     name: "",
@@ -23,7 +24,7 @@ const initialState = {
     created: "",
     userUuid: "",
   },
-  personalspacePageList: [],
+  blockListInPersonalPageList: [],
   pageListInTeamspaceList: [],
 };
 
@@ -68,6 +69,9 @@ const spaceSlice = createSlice({
         parentPageUuid: parent_page_uuid,
       };
     },
+    setCurrentPageBlockList: (state, action) => {
+      state.currentPageBlockList = action.payload;
+    },
     setCurrentWorkspace: (state, action) => {
       const { uuid, name, logo, plan, domain, created, user_uuid } =
         action.payload;
@@ -81,10 +85,13 @@ const spaceSlice = createSlice({
         userUuid: user_uuid,
       };
     },
-    setPersonalspacePageList: (state, acion) => {
-      const data = acion.payload;
-      // if (data == null) data = [];
-      state.personalspacePageList = data;
+    // setPersonalspacePageList: (state, action) => {
+    //   const data = acion.payload;
+    //   // if (data == null) data = [];
+    //   state.personalspacePageList = data;
+    // },
+    setBlockListInPersonalPageList: (state, action) => {
+      state.blockListInPersonalPageList = action.payload;
     },
     setPageListInTeamspaceList: (state, action) => {
       const data = action.payload;
@@ -97,7 +104,9 @@ const spaceSlice = createSlice({
 export const {
   setCurrentPage,
   setCurrentWorkspace,
-  setPersonalspacePageList,
+  // setPersonalspacePageList,
   setPageListInTeamspaceList,
+  setCurrentPageBlockList,
+  setBlockListInPersonalPageList,
 } = spaceSlice.actions;
 export default spaceSlice.reducer;

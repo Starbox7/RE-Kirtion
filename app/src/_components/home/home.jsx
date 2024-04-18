@@ -15,40 +15,35 @@ import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import spaceRepo from "../../repositories/space.repository";
 
-import { setCurrentPage } from "../../features/space.slice";
+import {
+  setCurrentPage,
+  // setPersonalspacePageList,
+  setBlockListInPersonalPageList,
+  setCurrentWorkspace,
+  setPageListInTeamspaceList,
+} from "../../features/space.slice";
 import useAuthorize from "../../_components/common/hooks/useAuthorize";
+import { setUpdateState } from "../../features/state.slice";
+import Block from "../common/block";
+import ListView from "../common/listview";
 
+//de bounce logic 생각하기
 export default function Home() {
   const { getAccessToken } = useAuthorize();
 
   const currentPage = useSelector((state) => state.space.currentPage);
+  const currentPageBlocks = useSelector(
+    (state) => state.space.currentPageBlockList
+  );
   const sidebarState = useSelector((state) => state.state.sidebarState);
+  const updateState = useSelector((state) => state.state.updateState);
 
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
-  const [intervalId, setIntervalId] = useState(null);
 
   const mutation = useMutation({ mutationFn: spaceRepo.updatePage });
 
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (intervalId) {
-  //     clearInterval(intervalId);
-  //   }
-  //   const pageUuid = currentPage.uuid;
-  //   const id = setInterval(() => {
-  //     mutation.mutate({ pageUuid, title, text }).then((result) => {
-  //       dispatch(setCurrentPage(result.data));
-  //     });
-  //   }, 3000);
-
-  //   setIntervalId(id);
-
-  //   return () => {
-  //     clearInterval(id);
-  //   };
-  // }, [text, title, mutation]);
 
   const onTitleChangeHandler = (title) => {
     setTitle(title);
@@ -57,14 +52,25 @@ export default function Home() {
     mutation
       .mutateAsync({ pageUuid, title, text, accessToken })
       .then((result) => {
-        console.log(result.data);
-        dispatch(setCurrentPage(result.data));
+        dispatch(setCurrentPage(result.data.current_page));
+        dispatch(setCurrentWorkspace(result.data.current_workspace));
+        dispatch(
+          setBlockListInPersonalPageList(
+            result.data.block_list_in_personal_page_list
+          )
+        );
+        dispatch(
+          setPageListInTeamspaceList(result.data.page_list_in_teamspace_list)
+        );
       });
   };
 
   useEffect(() => {
-    setTitle(currentPage.title);
-    setText(currentPage.text);
+    if (updateState) {
+      setTitle(currentPage.title);
+      setText(currentPage.text);
+      dispatch(setUpdateState(false));
+    }
   }, [currentPage]);
 
   return (
@@ -87,13 +93,14 @@ export default function Home() {
             maxLength={27}
           />
           <BlockBox>
-            <ContentAutoArea
-              value={text}
-              onChange={(e) => {
-                setText(e.target.value);
-              }}
-              placeholder="Write something, or press 'space' for AI, '/' for commands..."
-            />
+            {currentPageBlocks.map((block) => (
+              <Block
+                key={block.uuid}
+                blockData={block}
+                currentPage={currentPage}
+                title={title}
+              />
+            ))}
           </BlockBox>
         </PageContentBox>
       </PageBox>

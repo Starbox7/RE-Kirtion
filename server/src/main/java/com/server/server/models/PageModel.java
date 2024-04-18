@@ -104,4 +104,12 @@ public class PageModel {
     public void addCurrent(CurrentModel currentModel){
       currents.add(currentModel);
     }
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "page", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<BlockModel> blocks = new ArrayList<>();
+    public void addBlock(BlockModel blockModel){
+      addBlock(blockModel);
+    }
 }

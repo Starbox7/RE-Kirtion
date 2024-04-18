@@ -2,6 +2,7 @@ package com.server.server.services;
 
 import org.springframework.stereotype.Service;
 
+import com.server.server.interfaces.IBlockRepo;
 import com.server.server.interfaces.ICurrentRepo;
 import com.server.server.interfaces.IMessageRepo;
 import com.server.server.interfaces.IPageRepo;
@@ -18,6 +19,7 @@ import com.server.server.interfaces.IUserRepo;
 import com.server.server.interfaces.IUserSettingRepo;
 import com.server.server.interfaces.IVatRepo;
 import com.server.server.interfaces.IWorkspaceRepo;
+import com.server.server.models.BlockModel;
 import com.server.server.models.CurrentModel;
 import com.server.server.models.MessageModel;
 import com.server.server.models.PageModel;
@@ -56,6 +58,7 @@ public class InitModelService {
   private final IUserSettingRepo iUserSettingRepo;
   private final IVatRepo iVatRepo;
   private final IWorkspaceRepo iWorkspaceRepo;
+  private final IBlockRepo iBlockRepo;
 
   private final AuthService authService;
 
@@ -85,18 +88,31 @@ public class InitModelService {
         newPage.setTitle("Title");
         newPage.setBackground("https://images.unsplash.com/photo-1712617137312-343869c90743?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
         if(personalspace != null){
-          newPage.setPersonalspace(personalspace);
+            newPage.setPersonalspace(personalspace);
         }
         else if(teamspace != null){
-          newPage.setTeamspace(teamspace);  
+            newPage.setTeamspace(teamspace);  
         }
         else if(page != null){
-          newPage.setPage(page);
+            newPage.setPage(page);
         }
 
         this.iPageRepo.save(newPage);
 
         return newPage;
+    }
+
+    public BlockModel blockInit(PageModel pageModel){
+        BlockModel blockModel = new BlockModel();
+
+        blockModel.setPage(pageModel);
+        blockModel.setType("text");
+        blockModel.setData("");
+        blockModel.setCount(1);
+
+        iBlockRepo.save(blockModel);
+
+        return blockModel;
     }
 
     public PageSettingModel pageSettingInit(PageModel page) {

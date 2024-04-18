@@ -12,9 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.server.server.dtos.CreatePageDto;
 import com.server.server.dtos.InitDto;
 import com.server.server.dtos.SelectPageDto;
+import com.server.server.dtos.UpdateBlockDto;
 import com.server.server.dtos.UpdateDto;
+import com.server.server.dtos.domainDto.BlockDto;
 import com.server.server.dtos.domainDto.PageDto;
 import com.server.server.global.auth.JwtTokenProvider;
+import com.server.server.models.BlockModel;
 import com.server.server.models.CurrentModel;
 import com.server.server.models.PageModel;
 import com.server.server.models.PersonalspaceModel;
@@ -35,6 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.*;
+
 
 
 @Slf4j
@@ -51,7 +56,7 @@ public class SpaceController {
   private final InitModelService initModelService;
 
   @GetMapping("/init")
-  public ResponseEntity<InitDto> initSpacEntity(
+  public ResponseEntity<InitDto> initSpaceEntity(
     @RequestHeader(value = "authorization", required = true) String  accessToken) {
       Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
       UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -93,6 +98,7 @@ public class SpaceController {
       // }
 
       PageModel newPageModel = initModelService.pageInit(personalspaceModel, teamspaceModel, pageModel);
+      initModelService.blockInit(newPageModel);
       CurrentModel currentModel = spaceService.findCurrentByUserUuid(user.getUuid());
       WorkspaceModel workspaceModel = spaceService.findWorkspaceByWorkspaceUuid(createPageDto.getWorkspaceUuid());
       spaceService.updateCurrent(currentModel, newPageModel, workspaceModel);
@@ -103,7 +109,7 @@ public class SpaceController {
   }
 
   @PostMapping("/page/select")
-  public ResponseEntity<PageDto> selectPage(@RequestBody SelectPageDto selectPageDto, 
+  public ResponseEntity<InitDto> selectPage(@RequestBody SelectPageDto selectPageDto, 
     @RequestHeader(value = "authorization", required = true) String  accessToken) {
       Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
       UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -115,25 +121,48 @@ public class SpaceController {
       PageModel pageModel = spaceService.findPageByUuid(selectPageDto.getPageUuid());
       spaceService.updateCurrent(currentModel, pageModel, workspaceModel);
 
-      PageDto pageDto = new PageDto();
-      pageDto = pageDto.fromModel(pageModel);
+      InitDto initDto = initService.currentInit(user);
+      
 
-      return new ResponseEntity<>(pageDto, HttpStatus.OK);
+      return new ResponseEntity<>(initDto, HttpStatus.OK);
   }
 
   @PostMapping("/page/update")
-  public ResponseEntity<PageDto> updatePage(
+  public ResponseEntity<InitDto> updatePage(
     @RequestBody UpdateDto updateDto, 
     @RequestHeader(value = "authorization", required = true) String  accessToken) {
+      Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      String email = userDetails.getUsername();
+      UserModel user = authService.findUserByEmail(email);
+
       PageModel pageModel = spaceService.findPageByUuid(updateDto.getPageUuid());
-      PageModel updatePageModel = spaceService.updataPage(pageModel, updateDto.getTitle(), updateDto.getText());
+      spaceService.updataPage(pageModel, updateDto.getTitle(), updateDto.getText());
+
+      InitDto initDto = initService.currentInit(user);
       
 
-      PageDto pageDto = new PageDto();
-      pageDto = pageDto.fromModel(updatePageModel);
-
-      return new ResponseEntity<>(pageDto, HttpStatus.OK);
+      return new ResponseEntity<>(initDto, HttpStatus.OK);
   }
+
+  @PostMapping("/page/block/update")
+  public ResponseEntity<InitDto> updateBlock (
+    @RequestBody UpdateBlockDto updateBlockDto, 
+    @RequestHeader(value = "authorization", required = true) String  accessToken
+  ) {
+      Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+      String email = userDetails.getUsername();
+      UserModel user = authService.findUserByEmail(email);
+
+      BlockModel blockModel = spaceService.findBlockByUuid(updateBlockDto.getBlockUuid());
+      spaceService.updateBlock(blockModel, updateBlockDto.getType(), updateBlockDto.getData());
+
+      InitDto initDto = initService.currentInit(user);
+      
+      return new ResponseEntity<>(initDto, HttpStatus.OK);
+  }
+  
   
   
   

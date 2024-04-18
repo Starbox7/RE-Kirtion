@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setCurrentPage,
   setCurrentWorkspace,
-  setPersonalspacePageList,
+  // setPersonalspacePageList,
   setPageListInTeamspaceList,
+  setCurrentPageBlockList,
+  setBlockListInPersonalPageList,
 } from "../features/space.slice";
 import { useEffect } from "react";
 import { Box, CircularProgress } from "@mui/material";
+import { setUpdateBlockState, setUpdateState } from "../features/state.slice";
 
 export default function HomePage() {
   const dispatch = useDispatch();
@@ -19,12 +22,20 @@ export default function HomePage() {
     queryKey: ["spaceInit"],
     queryFn: () => spaceRepo.spaceInit(getAccessToken()),
   });
-  const currentPage = useSelector((state) => state.space.currentPage);
+  const check = useSelector((state) => state.space.blockListInPersonalPageList);
   useEffect(() => {
     if (!isLoading) {
+      dispatch(setUpdateState(true));
+      dispatch(setUpdateBlockState(true));
       dispatch(setCurrentPage(data.data.current_page));
+      dispatch(setCurrentPageBlockList(data.data.current_page_block_list));
       dispatch(setCurrentWorkspace(data.data.current_workspace));
-      dispatch(setPersonalspacePageList(data.data.personal_page_list));
+      // dispatch(setPersonalspacePageList(data.data.personal_page_list));
+      dispatch(
+        setBlockListInPersonalPageList(
+          data.data.block_list_in_personal_page_list
+        )
+      );
       dispatch(
         setPageListInTeamspaceList(data.data.page_list_in_teamspace_list)
       );

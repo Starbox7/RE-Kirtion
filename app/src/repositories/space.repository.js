@@ -57,6 +57,22 @@ const spaceRepo = {
       }
     );
   },
+
+  updateBlock: async (data) => {
+    return await axios.post(
+      "/space/page/block/update",
+      {
+        block_uuid: data.uuid,
+        type: data.type,
+        data: data.data,
+      },
+      {
+        headers: {
+          authorization: data.accessToken,
+        },
+      }
+    );
+  },
 };
 
 export default spaceRepo;

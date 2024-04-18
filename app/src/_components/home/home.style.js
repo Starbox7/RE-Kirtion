@@ -33,6 +33,7 @@ const TitleTextarea = styled.textarea`
   font-size: 50px;
   font-weight: bold;
   resize: none;
+  overflow-y: hidden;
   &:focus {
     outline: none;
   }

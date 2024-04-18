@@ -291,6 +291,7 @@ function PageSet({ image, text, onClick }) {
               marginLeft: "5px",
               overflow: "hidden",
               textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
             }}
           >
             {text}

@@ -7,10 +7,13 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.server.server.dtos.InitDto;
+import com.server.server.dtos.InitDto.BlockListInPersonalPage;
 import com.server.server.dtos.InitDto.PageListInTeamspace;
+import com.server.server.dtos.domainDto.BlockDto;
 import com.server.server.dtos.domainDto.PageDto;
 import com.server.server.dtos.domainDto.TeamspaceDto;
 import com.server.server.dtos.domainDto.WorkspaceDto;
+import com.server.server.interfaces.IBlockRepo;
 import com.server.server.interfaces.ICurrentRepo;
 import com.server.server.interfaces.IPageRepo;
 import com.server.server.interfaces.IPageSettingRepo;
@@ -20,6 +23,7 @@ import com.server.server.interfaces.IPersonalspaceRepo;
 import com.server.server.interfaces.ITeamspaceRepo;
 import com.server.server.interfaces.IUserSettingRepo;
 import com.server.server.interfaces.IWorkspaceRepo;
+import com.server.server.models.BlockModel;
 import com.server.server.models.CurrentModel;
 import com.server.server.models.PageModel;
 import com.server.server.models.PageSettingModel;
@@ -45,6 +49,7 @@ public class InitService {
   private final IPageUpdateRepo iPageUpdateRepo;
   private final IUserSettingRepo iUserSettingRepo;
   private final ITeamspaceRepo iTeamspaceRepo;
+  private final IBlockRepo iBlockRepo;
 
   private final InitModelService initModelService;
   
@@ -55,13 +60,20 @@ public class InitService {
 
     PageModel welcomePage = initModelService.pageInit(personalspace, null, null);
     welcomePage.setRoute("Welcome"); //보류
-    welcomePage.setText("Welcome to Kirtion");
+    welcomePage.setText("");
     welcomePage.setTitle("Start Kirtion");
     welcomePage.setBackground("https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     this.iPageRepo.save(welcomePage);
     initModelService.pageSettingInit(welcomePage);
     initModelService.pageSnapshotInit(welcomePage);
     initModelService.pageUpdateInit(welcomePage, user);
+
+    BlockModel block = new BlockModel();
+    block.setPage(welcomePage);
+    block.setType("text");
+    block.setCount(1);
+    block.setData("Welcome to Kirtion");
+    this.iBlockRepo.save(block);
 
     PageModel infoPage = initModelService.pageInit(personalspace, null, welcomePage);
     infoPage.setRoute("Information");
@@ -72,6 +84,13 @@ public class InitService {
     initModelService.pageSettingInit(infoPage);
     initModelService.pageSnapshotInit(infoPage);
     initModelService.pageUpdateInit(infoPage, user);
+
+    BlockModel block2 = new BlockModel();
+    block2.setPage(infoPage);
+    block2.setType("text");
+    block2.setCount(1);
+    block2.setData("How to use Kirtion?");
+    this.iBlockRepo.save(block2);
 
     initModelService.currentInit(welcomePage, user, workspace);
   }
@@ -84,16 +103,38 @@ public class InitService {
     PageDto pageDto = PageDto.fromModel(pageOptional.get());
     initDto.setCurrentPage(pageDto);
 
-    Optional<WorkspaceModel> workspacOptional = iWorkspaceRepo.findWorkspaceByUuid(currentOptional.get().getWorkspace().getUuid());
-    WorkspaceDto workspaceDto = WorkspaceDto.fromModel(workspacOptional.get());
+    List<BlockModel> blockModels = iBlockRepo.findAllBlockByPageUuid(pageDto.getUuid());
+    List<BlockDto> currentBlockDtos = BlockDto.fromModelList(blockModels);
+    initDto.setCurrentPageBlockList(currentBlockDtos);
+
+
+    Optional<WorkspaceModel> workspaceOptional = iWorkspaceRepo.findWorkspaceByUuid(currentOptional.get().getWorkspace().getUuid());
+    WorkspaceDto workspaceDto = WorkspaceDto.fromModel(workspaceOptional.get());
     initDto.setCurrentWorkspace(workspaceDto);
 
-    Optional<PersonalspaceModel> personalspaceOptional = iPersonalspaceRepo.findPersonalspaceByWorkspaceUuid(workspacOptional.get().getUuid());
-    List<PageModel> personalPageModels = iPageRepo.findAllPageByPersonalspaceUuid(personalspaceOptional.get().getUuid());
-    List<PageDto> personalPageDtos = PageDto.fromModelList(personalPageModels);
-    initDto.setPersonalPageList(personalPageDtos);
+    // Optional<PersonalspaceModel> personalspaceOptional = iPersonalspaceRepo.findPersonalspaceByWorkspaceUuid(workspaceOptional.get().getUuid());
+    // List<PageModel> personalPageModels = iPageRepo.findAllPageByPersonalspaceUuid(personalspaceOptional.get().getUuid());
+    // List<PageDto> personalPageDtos = PageDto.fromModelList(personalPageModels);
+    // initDto.setPersonalPageList(personalPageDtos);
 
-    List<TeamspaceModel> teamspaceModels = iTeamspaceRepo.findTAllTeamspaceByWorkspaceUuid(workspacOptional.get().getUuid());
+    Optional<PersonalspaceModel> personalspaceOptional = iPersonalspaceRepo.findPersonalspaceByWorkspaceUuid(workspaceOptional.get().getUuid());
+
+        if (personalspaceOptional.isPresent()) {
+            List<PageModel> personalPageModels = iPageRepo.findAllPageByPersonalspaceUuid(personalspaceOptional.get().getUuid());
+            List<BlockListInPersonalPage> blockListInPersonalPageList = new ArrayList<>();
+
+            for (PageModel page : personalPageModels) {
+                BlockListInPersonalPage blockListInPersonalPage = new BlockListInPersonalPage();
+                blockListInPersonalPage.setPersonalPage(PageDto.fromModel(page));
+                List<BlockDto> blockDtos = BlockDto.fromModelList(iBlockRepo.findAllBlockByPageUuid(page.getUuid()));
+                blockListInPersonalPage.setPersonalPageBlockList(blockDtos);
+                blockListInPersonalPageList.add(blockListInPersonalPage);
+            }
+
+            initDto.setBlockListInPersonalPageList(blockListInPersonalPageList);
+          }
+
+    List<TeamspaceModel> teamspaceModels = iTeamspaceRepo.findTAllTeamspaceByWorkspaceUuid(workspaceOptional.get().getUuid());
     List<TeamspaceDto> teamspaceDtos = TeamspaceDto.fromModelList(teamspaceModels);
     List<PageListInTeamspace> pageListInTeamspaces = new ArrayList<>();
 
