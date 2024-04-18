@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./auth.slice";
 import spaceSlice from "./space.slice";
+import stateSlice from "./state.slice";
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     space: spaceSlice,
+    state: stateSlice,
     // counter: counterSlice.reducer,
   },
 });

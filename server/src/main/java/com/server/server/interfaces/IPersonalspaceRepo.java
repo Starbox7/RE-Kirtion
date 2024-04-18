@@ -9,4 +9,5 @@ import com.server.server.models.WorkspaceModel;
 
 public interface IPersonalspaceRepo extends JpaRepository<PersonalspaceModel, String> {
   Optional<PersonalspaceModel> findPersonalspaceByWorkspaceUuid(String workspaceUuid);
+  Optional<PersonalspaceModel> findPersonalspaceByUuid(String uuid);
 }

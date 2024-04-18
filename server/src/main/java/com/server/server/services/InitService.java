@@ -57,6 +57,7 @@ public class InitService {
     welcomePage.setRoute("Welcome"); //보류
     welcomePage.setText("Welcome to Kirtion");
     welcomePage.setTitle("Start Kirtion");
+    welcomePage.setBackground("https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     this.iPageRepo.save(welcomePage);
     initModelService.pageSettingInit(welcomePage);
     initModelService.pageSnapshotInit(welcomePage);
@@ -66,6 +67,7 @@ public class InitService {
     infoPage.setRoute("Information");
     infoPage.setText("How to use Kirtion?"); 
     infoPage.setTitle("Kirtion Docs");
+    infoPage.setBackground("https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
     this.iPageRepo.save(infoPage);
     initModelService.pageSettingInit(infoPage);
     initModelService.pageSnapshotInit(infoPage);

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   SidebarBox,
   WorkspaceBox,
@@ -34,33 +34,76 @@ import {
   faTrashCan,
   faRectangleList,
 } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { setSidebarState } from "../../../features/state.slice";
+import { useMutation } from "@tanstack/react-query";
+import spaceRepo from "../../../repositories/space.repository";
+import useAuthorize from "../hooks/useAuthorize";
+import {
+  setCurrentPage,
+  setCurrentWorkspace,
+  setPersonalspacePageList,
+  setPageListInTeamspaceList,
+} from "../../../features/space.slice";
 
 export default function Sidebar() {
   const [isMouseOn, setIsMouseOn] = useState(false);
+  const currentWorkspaceData = useSelector(
+    (state) => state.space.currentWorkspace
+  );
+  const personalPageList = useSelector(
+    (state) => state.space.personalspacePageList
+  );
+  const sidebarState = useSelector((state) => state.state.sidebarState);
+  const dispatch = useDispatch();
+  const { getAccessToken } = useAuthorize();
+  const mutation = useMutation({ mutationFn: spaceRepo.createNewPage });
+  const selectPageMutation = useMutation({ mutationFn: spaceRepo.selectPage });
+
   return (
     <SidebarBox
       onMouseEnter={() => setIsMouseOn(true)}
       onMouseLeave={() => setIsMouseOn(false)}
+      state={sidebarState}
     >
       <WorkspaceBox>
         <WorkspaceTitleBox>
-          <WorkspaceLogoImg src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1673081460/noticon/iqrrp7ziu0xuvltesgbs.png" />
+          <WorkspaceLogoImg src={currentWorkspaceData.logo} />
           <WorkspaceTitleTextBox>
-            <WorkspaceTitleText>Arcione07's Kirtion</WorkspaceTitleText>
-            <UserEmailText>arcione07@naver.com</UserEmailText>
+            <WorkspaceTitleText>{currentWorkspaceData.name}</WorkspaceTitleText>
+            <UserEmailText>{currentWorkspaceData.plan}</UserEmailText>
           </WorkspaceTitleTextBox>
           <IconMergeBox>
             <UpIcon />
             <DownIcon />
           </IconMergeBox>
-          <SidebarOnOffButton isMouseOn={isMouseOn}>
+          <SidebarOnOffButton
+            onClick={() => {
+              dispatch(setSidebarState(false));
+            }}
+            isMouseOn={isMouseOn}
+          >
             <LeftIcon />
           </SidebarOnOffButton>
         </WorkspaceTitleBox>
         <FunctionSet icon={faMagnifyingGlass} text="Search" />
         <FunctionSet icon={faInbox} text="Inbox" />
         <FunctionSet icon={faGear} text="Settings & Members" />
-        <FunctionSet icon={faCirclePlus} text="New Page" />
+        <FunctionSet
+          onClick={async () => {
+            const accessToken = getAccessToken();
+            const uuid = currentWorkspaceData.uuid;
+            await mutation.mutateAsync({ accessToken, uuid }).then((result) => {
+              dispatch(setCurrentPage(result.data.current_page));
+
+              dispatch(
+                setPersonalspacePageList(result.data.personal_page_list)
+              );
+            });
+          }}
+          icon={faCirclePlus}
+          text="New Page"
+        />
       </WorkspaceBox>
       <MarginBox />
       <WorkspaceBox>
@@ -87,10 +130,27 @@ export default function Sidebar() {
             <SpaceAddIcon />
           </SpaceAddButton>
         </SpaceAddBox>
-        <PageSet
-          image="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1575060109/noticon/kkzcn5hjh5f6lq8hxea4.svg"
-          text="Page"
-        />
+        {personalPageList.map((page) => (
+          <PageSet
+            image={page.icon}
+            text={page.title}
+            onClick={async () => {
+              const accessToken = getAccessToken();
+              const pageUuid = page.uuid;
+              const workspaceUuid = currentWorkspaceData.uuid;
+              await selectPageMutation
+                .mutateAsync({
+                  accessToken,
+                  pageUuid,
+                  workspaceUuid,
+                })
+                .then((result) => {
+                  console.log(result.data);
+                  dispatch(setCurrentPage(result.data));
+                });
+            }}
+          />
+        ))}
       </WorkspaceBox>
       <MarginBox />
       <WorkspaceBox>

@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Box, Button } from "@mui/material";
 import { useState } from "react";
 
-const SidebarBox = styled(Box)({
+const SidebarBox = styled(Box)(({ state }) => ({
   display: "flex",
   flexDirection: "column",
   alignItems: "flex-start",
@@ -20,7 +20,10 @@ const SidebarBox = styled(Box)({
   height: "100vh",
   background: "#F7F7F5",
   position: "fixed",
-});
+
+  transform: `translateX(${state}? "0" : "-100%")`,
+  translation: "transform 1.0s ease-out",
+}));
 
 const WorkspaceBox = styled(Box)({
   display: "flex",
@@ -153,9 +156,9 @@ const FunctionBox = styled(Box)({
     backgroundColor: "#E8E8E5",
   },
 });
-function FunctionSet({ icon, text }) {
+function FunctionSet({ icon, text, onClick }) {
   return (
-    <FunctionBox>
+    <FunctionBox onClick={onClick}>
       <FontAwesomeIcon
         icon={icon}
         style={{
@@ -246,12 +249,13 @@ const TeamspcaeTitlText = styled.p`
   margin: 0;
 `;
 
-function PageSet({ image, text }) {
+function PageSet({ image, text, onClick }) {
   const [isMouseOnButton, setIsMouseOnButton] = useState(false);
   return (
     <FunctionBox
       onMouseEnter={() => setIsMouseOnButton(true)}
       onMouseLeave={() => setIsMouseOnButton(false)}
+      onClick={onClick}
     >
       <Box
         style={{

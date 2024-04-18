@@ -1,18 +1,19 @@
 import styled from "@emotion/styled";
 import { Box, Button } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 
-const RoutingBarBox = styled(Box)({
+const RoutingBarBox = styled(Box)(({ state }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  width: "calc(100vw - 245px)",
+  width: state ? "calc(100vw - 245px)" : "100vw",
   height: "45px",
   minHeight: "45px",
   position: "fixed",
   background: "white",
   zIndex: 3,
-});
+}));
 const RouteBox = styled(Box)({
   display: "flex",
   justifyContent: "flex-start",
@@ -29,13 +30,37 @@ const RouteBox = styled(Box)({
     backgroundColor: "#E8E8E5",
   },
 });
-function RouteSet({ image, text }) {
-  // const [isMouseOnButton, setIsMouseOnButton] = useState(false);
+const SidebarOnOffButton = styled(Button)(({}) => ({
+  transition: "opacity 0.3s ease, visibility 0.3s ease",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  height: "25px",
+  width: "20px",
+  minWidth: "15px",
+  marginLeft: "20px",
+  paddingLeft: "5px",
+  paddingRight: "5px",
+  marginBottom: "5px",
+  "&:hover": {
+    backgroundColor: "lightgray",
+  },
+}));
+function BarIcon() {
   return (
-    <RouteBox
-    // onMouseEnter={() => setIsMouseOnButton(true)}
-    // onMouseLeave={() => setIsMouseOnButton(false)}
-    >
+    <FontAwesomeIcon
+      icon={faBars}
+      style={{
+        color: "gray",
+        margin: 0,
+        padding: 0,
+      }}
+    />
+  );
+}
+function RouteSet({ image, text }) {
+  return (
+    <RouteBox>
       <img
         src={image}
         style={{
@@ -97,4 +122,6 @@ export {
   ShareButton,
   RouteSet,
   RouteBarOptionButtonSet,
+  SidebarOnOffButton,
+  BarIcon,
 };

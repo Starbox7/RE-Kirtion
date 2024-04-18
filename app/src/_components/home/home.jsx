@@ -1,9 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import spaceRepo from "../../repositories/space.repository";
-import useHome from "./useHome";
-import { TestPageText } from "../../constants/constant";
 import {
-  ContentTextField,
+  ContentAutoArea,
   PageBox,
   SpaceBox,
   TitleTextarea,
@@ -14,51 +10,89 @@ import {
 } from "./home.style";
 import Sidebar from "../common/sidebar/sidebar";
 import Routingbar from "../common/routingbar/routingbar";
-import Textarea from "@mui/joy/Textarea";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import spaceRepo from "../../repositories/space.repository";
+
+import { setCurrentPage } from "../../features/space.slice";
+import useAuthorize from "../../_components/common/hooks/useAuthorize";
 
 export default function Home() {
-  const { isLoading, isError, data, error } = useQuery({
-    queryKey: ["spaceInit"],
-    queryFn: () => spaceRepo.spaceInit(getAccessToken()),
-  });
-  const { getAccessToken } = useHome();
+  const { getAccessToken } = useAuthorize();
+
+  const currentPage = useSelector((state) => state.space.currentPage);
+  const sidebarState = useSelector((state) => state.state.sidebarState);
+
+  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
+  const [intervalId, setIntervalId] = useState(null);
+
+  const mutation = useMutation({ mutationFn: spaceRepo.updatePage });
+
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   if (intervalId) {
+  //     clearInterval(intervalId);
+  //   }
+  //   const pageUuid = currentPage.uuid;
+  //   const id = setInterval(() => {
+  //     mutation.mutate({ pageUuid, title, text }).then((result) => {
+  //       dispatch(setCurrentPage(result.data));
+  //     });
+  //   }, 3000);
+
+  //   setIntervalId(id);
+
+  //   return () => {
+  //     clearInterval(id);
+  //   };
+  // }, [text, title, mutation]);
+
+  const onTitleChangeHandler = (title) => {
+    setTitle(title);
+    const pageUuid = currentPage.uuid;
+    const accessToken = getAccessToken();
+    mutation
+      .mutateAsync({ pageUuid, title, text, accessToken })
+      .then((result) => {
+        console.log(result.data);
+        dispatch(setCurrentPage(result.data));
+      });
+  };
+
+  useEffect(() => {
+    setTitle(currentPage.title);
+    setText(currentPage.text);
+  }, [currentPage]);
 
   return (
     <SpaceBox>
-      <Sidebar />
-      <PageBox>
+      {sidebarState ? <Sidebar /> : null}
+      <PageBox state={sidebarState}>
         <Routingbar />
         <PageContentBox>
-          <Img src="https://images.unsplash.com/photo-1712928247899-2932f4c7dea3?q=80&w=3200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-          <IconBox>
-            <img
-              style={{ width: "90px" }}
-              src="https://noticon-static.tammolo.com/dgggcrkxq/image/upload/v1567008788/noticon/bqjhb6xvljt9viccy6lh.png"
-              alt=""
-            />
+          <Img state={sidebarState} src={currentPage.background} />
+          <IconBox state={sidebarState}>
+            <img style={{ width: "90px" }} src={currentPage.icon} alt="" />
           </IconBox>
           <TitleTextarea
-            placeholder="Untitled"
-            sx={{
-              "&:focus-visible": {
-                outline: "none",
-              },
+            value={title}
+            onChange={(e) => {
+              onTitleChangeHandler(e.target.value);
             }}
+            state={sidebarState}
+            placeholder="Untitled"
+            maxLength={27}
           />
           <BlockBox>
-            <ContentTextField
-              multiline
-              variant="standard"
-              // placeholder="Write something."
-              // label="Write something, or press 'space' for AI, '/' for commands..."
-              InputProps={{
-                disableUnderline: true,
+            <ContentAutoArea
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
               }}
-            />
-            <Textarea
-              sx={{
-                "--Textarea-focusedHighlight": "transparent",
-              }}
+              placeholder="Write something, or press 'space' for AI, '/' for commands..."
             />
           </BlockBox>
         </PageContentBox>
