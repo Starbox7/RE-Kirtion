@@ -21,6 +21,8 @@ import { setSidebarState } from "../../../features/state.slice";
 export default function Routingbar() {
   const currentPage = useSelector((state) => state.space.currentPage);
   const sidebarState = useSelector((state) => state.state.sidebarState);
+  const state = useSelector((state) => state.auth.authenticationState);
+
   const dispatch = useDispatch();
   return (
     <RoutingBarBox state={sidebarState}>
@@ -37,7 +39,7 @@ export default function Routingbar() {
         <RouteSet image={currentPage.icon} text={currentPage.title} />
       </Box>
       <RouteBarOptionBox>
-        <ShareButton>Share</ShareButton>
+        <ShareButton onClick={() => {}}>Share</ShareButton>
         <RouteBarOptionButtonSet icon={faMessage} />
         <RouteBarOptionButtonSet icon={faClock} />
         <RouteBarOptionButtonSet icon={faStar} />

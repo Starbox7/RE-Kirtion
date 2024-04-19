@@ -40,6 +40,7 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/auth/**").permitAll()
+                    .requestMatchers("/space/assets/images/**").permitAll()
                     // .requestMatchers("/**").permitAll()
                     // .requestMatchers("/members/test").hasRole("USER")
                     .anyRequest().authenticated())

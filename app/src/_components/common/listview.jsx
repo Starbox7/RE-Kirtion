@@ -1,6 +1,42 @@
 import { Box } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import spaceRepo from "../../repositories/space.repository";
+import useAuthorize from "./hooks/useAuthorize";
+import { useDispatch } from "react-redux";
+import {
+  setBlockListInPersonalPageList,
+  setCurrentPage,
+  setCurrentPageBlockList,
+  setCurrentWorkspace,
+  setPageListInTeamspaceList,
+} from "../../features/space.slice";
+import { setUpdateState } from "../../features/state.slice";
 
-export default function ListView({ position }) {
+export default function ListView({ position, select, uuid, count }) {
+  const { getAccessToken } = useAuthorize();
+  const mutation = useMutation({ mutationFn: spaceRepo.createBlock });
+  const dispatch = useDispatch();
+  const onClickHandler = async (type) => {
+    const accessToken = getAccessToken();
+    const newCount = count + 2;
+    await mutation
+      .mutateAsync({ uuid, type, newCount, accessToken })
+      .then((result) => {
+        dispatch(setUpdateState(true));
+        dispatch(setCurrentPage(result.data.current_page));
+        dispatch(setCurrentPageBlockList(result.data.current_page_block_list));
+        dispatch(setCurrentWorkspace(result.data.current_workspace));
+        dispatch(
+          setBlockListInPersonalPageList(
+            result.data.block_list_in_personal_page_list
+          )
+        );
+        dispatch(
+          setPageListInTeamspaceList(result.data.page_list_in_teamspace_list)
+        );
+      });
+  };
+
   return (
     <Box
       sx={{
@@ -21,6 +57,10 @@ export default function ListView({ position }) {
     >
       <Box sx={{ fontSize: "12px", color: "gray" }}>Basic Blocks</Box>
       <Box
+        onClick={async () => {
+          await onClickHandler("title");
+          select();
+        }}
         sx={{
           display: "flex",
           justifyContent: "flex-start",
@@ -57,6 +97,10 @@ export default function ListView({ position }) {
         </Box>
       </Box>
       <Box
+        onClick={async () => {
+          await onClickHandler("text");
+          select();
+        }}
         sx={{
           display: "flex",
           justifyContent: "flex-start",
@@ -93,6 +137,10 @@ export default function ListView({ position }) {
         </Box>
       </Box>
       <Box
+        onClick={async () => {
+          await onClickHandler("image");
+          select();
+        }}
         sx={{
           display: "flex",
           justifyContent: "flex-start",

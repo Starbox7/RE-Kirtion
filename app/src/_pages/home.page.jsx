@@ -22,7 +22,7 @@ export default function HomePage() {
     queryKey: ["spaceInit"],
     queryFn: () => spaceRepo.spaceInit(getAccessToken()),
   });
-  const check = useSelector((state) => state.space.blockListInPersonalPageList);
+
   useEffect(() => {
     if (!isLoading) {
       dispatch(setUpdateState(true));

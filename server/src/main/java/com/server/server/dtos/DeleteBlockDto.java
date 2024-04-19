@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class UpdateBlockDto {
+public class DeleteBlockDto {
   @JsonProperty(value = "block_uuid")
   private String blockUuid;
-  private String type;
-  private String data;
-  private int count;
 }

@@ -73,6 +73,48 @@ const spaceRepo = {
       }
     );
   },
+  createBlock: async (data) => {
+    return await axios.post(
+      "/space/page/block/create",
+      {
+        block_uuid: data.uuid,
+        type: data.type,
+        count: data.newCount,
+      },
+      {
+        headers: {
+          authorization: data.accessToken,
+        },
+      }
+    );
+  },
+  createBlockImage: async (data) => {
+    return await axios.post(
+      "/space/image",
+
+      data.formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          authorization: data.accessToken,
+          uuid: data.newUuid,
+        },
+      }
+    );
+  },
+  deleteBlock: async (data) => {
+    return await axios.post(
+      "/space/page/block/delete",
+      {
+        block_uuid: data.uuid,
+      },
+      {
+        headers: {
+          authorization: data.accessToken,
+        },
+      }
+    );
+  },
 };
 
 export default spaceRepo;

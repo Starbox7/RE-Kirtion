@@ -103,7 +103,12 @@ export default function Sidebar() {
             const accessToken = getAccessToken();
             const uuid = currentWorkspaceData.uuid;
             await mutation.mutateAsync({ accessToken, uuid }).then((result) => {
+              dispatch(setUpdateState(true));
+              dispatch(setUpdateBlockState(true));
               dispatch(setCurrentPage(result.data.current_page));
+              dispatch(
+                setCurrentPageBlockList(result.data.current_page_block_list)
+              );
               dispatch(
                 // setPersonalspacePageList(result.data.personal_page_list)
                 setBlockListInPersonalPageList(

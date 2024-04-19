@@ -78,7 +78,7 @@ public class SpaceService {
     this.iCurrentRepo.save(currentModel);
   }
 
-  public PageModel updataPage (PageModel pageModel, String title, String text){
+  public PageModel updatePage (PageModel pageModel, String title, String text){
     pageModel.setTitle(title);
     pageModel.setText(text);
 
@@ -99,5 +99,9 @@ public class SpaceService {
     blockModel.setData(data);
 
     this.iBlockRepo.save(blockModel);
+  }
+
+  public void deleteBlock (BlockModel blockModel){
+    this.iBlockRepo.delete(blockModel);
   }
 }

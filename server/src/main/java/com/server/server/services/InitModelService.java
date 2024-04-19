@@ -102,13 +102,13 @@ public class InitModelService {
         return newPage;
     }
 
-    public BlockModel blockInit(PageModel pageModel){
+    public BlockModel blockInit(PageModel pageModel, int count, String type){
         BlockModel blockModel = new BlockModel();
 
         blockModel.setPage(pageModel);
-        blockModel.setType("text");
+        blockModel.setType(type);
         blockModel.setData("");
-        blockModel.setCount(1);
+        blockModel.setCount(count);
 
         iBlockRepo.save(blockModel);
 

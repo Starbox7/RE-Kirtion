@@ -20,7 +20,7 @@ export default function Router() {
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/home"
-          element={authenticationState ? <HomePage /> : <HomePage />}
+          element={authenticationState ? <HomePage /> : <LoginPage />}
         />
         <Route path="/*" element={<LoginPage />} />
       </Routes>

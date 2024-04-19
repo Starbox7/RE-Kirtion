@@ -4,6 +4,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 
 const SpaceBox = styled(Box)({
   display: "flex",
+  marginBottom: "140px",
 });
 
 const PageBox = styled(Box)(({ state }) => ({
@@ -49,7 +50,20 @@ const BlockBox = styled(Box)({
 
 const ContentAutoArea = styled(ReactTextareaAutosize)`
   border: none;
-  padding: 0 100px;
+  resize: none;
+
+  &:focus {
+    outline: none;
+  }
+  &:placeholder {
+    color: #ddd;
+  }
+`;
+const ContentTitleArea = styled(ReactTextareaAutosize)`
+  font-weight: bold;
+  font-size: 25px;
+  border: none;
+  resize: none;
 
   &:focus {
     outline: none;
@@ -77,4 +91,5 @@ export {
   IconBox,
   PageContentBox,
   BlockBox,
+  ContentTitleArea,
 };

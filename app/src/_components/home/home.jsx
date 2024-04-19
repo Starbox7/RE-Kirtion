@@ -35,6 +35,11 @@ export default function Home() {
   const currentPageBlocks = useSelector(
     (state) => state.space.currentPageBlockList
   );
+  // items.sort((a, b) => a.count - b.count);
+  const sortBlocks = currentPageBlocks
+    .slice()
+    .sort((a, b) => a.count - b.count);
+  const blockLength = sortBlocks.length;
   const sidebarState = useSelector((state) => state.state.sidebarState);
   const updateState = useSelector((state) => state.state.updateState);
 
@@ -93,12 +98,13 @@ export default function Home() {
             maxLength={27}
           />
           <BlockBox>
-            {currentPageBlocks.map((block) => (
+            {sortBlocks.map((block) => (
               <Block
                 key={block.uuid}
                 blockData={block}
                 currentPage={currentPage}
                 title={title}
+                length={blockLength}
               />
             ))}
           </BlockBox>
