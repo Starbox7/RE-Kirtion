@@ -44,7 +44,7 @@
 
 ### 1. 클론 및 의존성 설치
 ```
-   git clone https://github.com/yourusername/notion-clone.git
+   git clone https://github.com/starbox7/notion-clone.git
    cd notion-clone
 ```
 ### 2. 백엔드와 프론트엔드 의존성을 각각 설치합니다.
