@@ -42,14 +42,12 @@
 - **Authentication**: Email Authentication 
 - **CI/CD**: GitHub 
 
-### 클론 및 의존성 설치
-
-1. 이 저장소를 클론합니다.
+### 1. 클론 및 의존성 설치
 ```
    git clone https://github.com/yourusername/notion-clone.git
    cd notion-clone
 ```
-3. 백엔드와 프론트엔드 의존성을 각각 설치합니다.
+### 2. 백엔드와 프론트엔드 의존성을 각각 설치합니다.
 
 ```
 # 백엔드 설치
@@ -61,7 +59,7 @@ cd ../frontend
 npm install
 ```
 
-### 2. 환경 변수 설정
+### 3. 환경 변수 설정
 
 - `.env` 파일을 생성하고 필요한 환경 변수를 설정합니다.
 
@@ -75,7 +73,7 @@ npm install
    REACT_APP_API_URL=http://localhost:5000
 ```
 
-### 3. 서버 및 클라이언트 실행
+### 4. 서버 및 클라이언트 실행
 
 1. 백엔드 서버를 실행합니다.
 
