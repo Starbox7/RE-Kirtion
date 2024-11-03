@@ -31,31 +31,27 @@
 - **다양한 메모 기능**: `/` 키를 통해 텍스트, 체크박스, 이미지, 코드 블록 등 다양한 메모 옵션을 빠르게 삽입할 수 있습니다.
 - **실시간 편집**: 작성 중인 메모를 실시간으로 자동 저장하여 데이터 손실을 방지합니다.
 - **튜토리얼 및 소개 페이지**: 첫 회원 가입 시 튜토리얼과 기능 소개 페이지를 자동으로 제공하여 사용자가 쉽게 서비스에 익숙해질 수 있습니다.
-- **태그 및 검색 기능**: 메모에 태그를 추가하고, 키워드를 통해 쉽게 메모를 검색할 수 있습니다.
 - **반응형 UI**: 모바일, 태블릿, 데스크탑에서 모두 최적화된 화면을 제공하여 사용성을 높입니다.
 
 ## 💻 기술 스택
 
-- **Frontend**: React, Tailwind CSS
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **Real-time Collaboration**: WebSocket, Socket.io
-- **Authentication**: Firebase Authentication
-- **CI/CD**: GitHub Actions
-- **기타**: Docker, Kubernetes
+- **Frontend**: React, Mui component 
+- **Backend**: Spring-boot 
+- **Database**: Postgresql
+- **Real-time Collaboration**: react-query
+- **Authentication**: Email Authentication 
+- **CI/CD**: GitHub 
 
-### 1. 클론 및 의존성 설치
+### 클론 및 의존성 설치
 
 1. 이 저장소를 클론합니다.
-
-   ```bash
+```
    git clone https://github.com/yourusername/notion-clone.git
    cd notion-clone
+```
+3. 백엔드와 프론트엔드 의존성을 각각 설치합니다.
 
-2. 백엔드와 프론트엔드 의존성을 각각 설치합니다.
-
-bash
-코드 복사
+```
 # 백엔드 설치
 cd backend
 npm install
@@ -63,16 +59,13 @@ npm install
 # 프론트엔드 설치
 cd ../frontend
 npm install
+```
 
-
-#### 환경 변수 설정
-
-```markdown
 ### 2. 환경 변수 설정
 
 - `.env` 파일을 생성하고 필요한 환경 변수를 설정합니다.
 
-   ```env
+```
    # 백엔드 환경 변수
    MONGO_URI=your_mongodb_uri
    PORT=5000
@@ -80,36 +73,28 @@ npm install
 
    # 프론트엔드 환경 변수
    REACT_APP_API_URL=http://localhost:5000
+```
 
-#### 서버 및 클라이언트 실행
-
-```markdown
 ### 3. 서버 및 클라이언트 실행
 
 1. 백엔드 서버를 실행합니다.
 
-   ```bash
+```
    cd backend
    npm start
-
+```
 2. 프론트엔드 클라이언트를 실행합니다.
-
-bash
-코드 복사
+```
 cd ../frontend
 npm start
-
+```
 
 ---
 
-### 7. 사용법
-
-```markdown
 ## 📱 사용법
 
 1. **회원 가입**: 회원 가입 후 처음 로그인하면, 서비스 튜토리얼과 주요 기능을 안내하는 소개 페이지가 표시됩니다.
 2. **메모 작성**: `/` 키를 눌러 텍스트, 체크박스, 이미지 등을 추가할 수 있는 메뉴를 호출하여 다양한 포맷으로 메모를 작성합니다.
-3. **태그 추가**: 메모에 태그를 달아 나중에 쉽게 검색하고 분류할 수 있습니다.
 4. **실시간 편집**: 다른 사용자와 함께 메모를 편집하면 실시간으로 반영됩니다.
 5. **메모 검색**: 키워드를 입력해 필요한 메모를 빠르게 찾을 수 있습니다.
 
@@ -118,18 +103,15 @@ npm start
 1. 이슈를 확인하고 기여할 작업을 선택합니다.
 2. 기능 추가나 버그 수정을 위해 브랜치를 생성합니다.
 
-   ```bash
+ ```
    git checkout -b feature/새기능
-
+```
 
 ---
 
-### 9. 라이선스
-
-```markdown
 ## 📄 라이선스
 
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](./LICENSE) 파일을 참조하세요.
+이 프로젝트는 MIT 라이선스 하에 배포됩니다.
 
 <p align="center">
   Made with ❤️ by the Notion Clone Project Team
